@@ -1,3 +1,4 @@
+#include <functional>
 #include "spotifyDisplay.h"
 
 #include "touchScreen.h"
@@ -81,6 +82,10 @@ public:
     setImageHeight(150);
     setImageWidth(150);
 
+    auto boundDrawRect = std::bind(&TFT_eSPI::drawRect, &tft, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5);
+    auto boundFillRect = std::bind(&TFT_eSPI::fillRect, &tft, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, std::placeholders::_5);
+    bar = ProgressBar(boundDrawRect, boundFillRect, 19, 167, screenWidth - 38, 5, 0, 0x4EEB, 0x422C, 0xFFFF);
+
     // Start the tft display and set it to black
     tft.init();
     tft.setRotation(1);
@@ -106,19 +111,7 @@ public:
     float percentage = ((float)progress / (float)duration) * 100;
     int clampedPercentage = (int)percentage;
     // Serial.println(clampedPercentage);
-    int barXWidth = map(clampedPercentage, 0, 100, 0, screenWidth - 40);
-    // Serial.println(barXWidth);
-
-    int progressStartY = 150 + 5;
-
-    // Draw outer Rectangle, in theory we only need to do this once!
-    tft.drawRect(19, progressStartY, screenWidth - 38, 20, TFT_WHITE);
-
-    // Draw the white portion of the filled bar
-    tft.fillRect(20, progressStartY + 1, barXWidth, 18, TFT_WHITE);
-
-    // Fill whats left black
-    tft.fillRect(20 + barXWidth, progressStartY + 1, (screenWidth - 20) - (20 + barXWidth), 18, TFT_BLACK);
+    bar.updateProgress(clampedPercentage);
   }
 
   void printCurrentlyPlayingToScreen(CurrentlyPlaying currentlyPlaying)

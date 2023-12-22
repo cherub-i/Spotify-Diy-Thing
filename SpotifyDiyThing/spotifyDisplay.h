@@ -1,6 +1,8 @@
 #ifndef SPOTIFYDISPLAY_H
 #define SPOTIFYDISPLAY_H
 
+#include "ProgressBar.cpp"
+
 class SpotifyDisplay {
   public:
     virtual void displaySetup(SpotifyArduino *spotifyObj) = 0;
@@ -64,5 +66,6 @@ class SpotifyDisplay {
     SpotifyArduino *spotify_display;
     char _albumArtUrl[200];
     boolean albumDisplayed = false;
+    ProgressBar bar;
 };
 #endif
