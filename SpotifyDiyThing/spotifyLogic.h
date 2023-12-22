@@ -18,6 +18,8 @@ unsigned long requestDueTime;              // time when request due
 unsigned long delayBetweenProgressUpdates = 500; // Time between requests (0.5 seconds)
 unsigned long progressDueTime;                   // time when request due
 
+boolean isPlaying = false;
+
 void spotifySetup(SpotifyDisplay *theDisplay, const char *clientId, const char *clientSecret)
 {
   sp_Display = theDisplay;
@@ -88,11 +90,13 @@ void handleCurrentlyPlaying(CurrentlyPlaying currentlyPlaying)
       // at updating the progress bar more often than checking the API
       songStartMillis = millis() - currentlyPlaying.progressMs;
       songDuration = currentlyPlaying.durationMs;
+      isPlaying = true;
     }
     else
     {
       // Song doesn't seem to be playing, do not update the progress
       songStartMillis = 0;
+      isPlaying = false;
     }
   }
 }
