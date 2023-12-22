@@ -15,7 +15,7 @@
 // (Uncomment the required #define)
 
 // 1. Cheap yellow display (Using TFT-eSPI library)
-define YELLOW_DISPLAY
+#define YELLOW_DISPLAY
 
 // 2. Matrix Displays (Like the ESP32 Trinity)
 // #define MATRIX_DISPLAY
